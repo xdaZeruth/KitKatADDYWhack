@@ -23,7 +23,7 @@ public class Mine extends Job {
 
 	@Override
 	public boolean validate() {
-		return (ctx.backpack.select().count()<=27 && ctx.objects.select().id(anyRock).nearest().poll().isOnScreen());
+		return (ctx.backpack.select().count()<=27 && ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())<=6);
 	}
 	
 	@Override

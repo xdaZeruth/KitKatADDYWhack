@@ -5,6 +5,8 @@ import utils.Utils;
 import core.Job;
 
 public class WalkFromBank extends Job {
+	
+	private final int anyRock[] = {45067, 45068, 29233, 29235};
 	   
 	public WalkFromBank(MethodContext arg0) {
 		super(arg0);
@@ -12,9 +14,9 @@ public class WalkFromBank extends Job {
 
 	@Override
 	public boolean validate() {
-		double DistanceFromRock = (ctx.players.local().getLocation().distanceTo(new Tile(2875,10253,0)));
-		return ((ctx.backpack.select().isEmpty() && DistanceFromRock >=6) || 
-				((ctx.backpack.select().id(20406).count()==1) || (ctx.backpack.select().id(20407).count()==1)&&(ctx.backpack.select().count()==1&&DistanceFromRock >=10)));
+		return ((ctx.backpack.select().isEmpty() && ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())<=6) || 
+				((ctx.backpack.select().id(20406).count()==1) && (ctx.backpack.select().id(20407).count()==1)&&ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6)) || 
+				((ctx.backpack.select().id(20406).count()==2) || ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6);
 	}
 	
 	@Override
