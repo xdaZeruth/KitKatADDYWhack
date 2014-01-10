@@ -14,9 +14,8 @@ public class WalkFromBank extends Job {
 
 	@Override
 	public boolean validate() {
-		return ((ctx.backpack.select().isEmpty() && ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())<=6) || 
-				((ctx.backpack.select().id(20406).count()==1) && (ctx.backpack.select().id(20407).count()==1)&&ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6)) || 
-				((ctx.backpack.select().id(20406).count()==2) || ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6);
+		return ((ctx.backpack.select().isEmpty() && ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6) || 
+				((ctx.backpack.select().count()<=2 && ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6)));
 	}
 	
 	@Override
