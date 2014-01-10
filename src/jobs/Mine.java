@@ -1,11 +1,9 @@
 package jobs;
 import java.util.concurrent.Callable;
-
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
-
 import utils.Utils;
 import core.Job;
 

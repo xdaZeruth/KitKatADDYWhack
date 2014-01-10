@@ -1,5 +1,6 @@
 package jobs;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Random;
 
 import utils.Utils;
 import core.Job;
@@ -14,10 +15,8 @@ public class Banking extends Job {
 
 	@Override
 	public boolean validate() {
-		if (ctx.objects.select().id(6084).nearest().poll().isOnScreen()){
-        return (ctx.backpack.select().count()==28);
-		}
-		else return false;
+        return ((ctx.objects.select().id(bankID).nearest().poll().isOnScreen())
+        		&&(ctx.backpack.select().count()==28));
 	}
 
 	@Override
@@ -25,11 +24,13 @@ public class Banking extends Job {
 		System.out.println("Banking");
                 	while (!ctx.bank.open()) {
                 		ctx.objects.select().id(bankID).nearest();
-                		sleep(250, 350);	
+                		sleep(300, 550);	
                     }
                 	ctx.bank.depositInventory();
-                	sleep(300,500);
-                    ctx.bank.close();
+                	sleep(300,550);
+                	if (Random.nextInt(1, 5)==5){ //randomize closing the bank.
+                		ctx.bank.close();		  //not needed and can just map click.	  
+                	}
                     Utils.log("---Banked---");
                 }
            
