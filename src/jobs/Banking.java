@@ -7,6 +7,8 @@ import core.Job;
 
 public class Banking extends Job {
 	private final int bankID[] = {11402, 26972, 11758, 35647, 11402, 2213, 20980, 782, 6084};
+	private final int decUrn = 20406;
+	private final int partialDecUrn = 20407;
 
 	
 	public Banking(MethodContext arg0) {
@@ -27,6 +29,12 @@ public class Banking extends Job {
                     }
                 	ctx.bank.depositInventory();
                 	sleep(300,550);
+                	if (ctx.bank.select().id(decUrn).count()>=1 && ctx.bank.select().id(partialDecUrn).count()<1){
+                		ctx.bank.withdraw(decUrn, 1);
+                	}
+                	else if (ctx.bank.select().id(partialDecUrn).count()>=1){
+                		ctx.bank.withdraw(partialDecUrn, 1);
+                	}
                 	if (Random.nextInt(1, 5)==5){ //randomize closing the bank.
                 		ctx.bank.close();		  //not needed and can just map click.	  
                 	}

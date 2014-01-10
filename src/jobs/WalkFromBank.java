@@ -13,7 +13,8 @@ public class WalkFromBank extends Job {
 	@Override
 	public boolean validate() {
 		double DistanceFromRock = (ctx.players.local().getLocation().distanceTo(new Tile(2875,10253,0)));
-		return (ctx.backpack.select().isEmpty() && DistanceFromRock >=6);
+		return ((ctx.backpack.select().isEmpty() && DistanceFromRock >=6) || 
+				((ctx.backpack.select().id(20406).count()==1) || (ctx.backpack.select().id(20407).count()==1)&&(ctx.backpack.select().count()==1&&DistanceFromRock >=10)));
 	}
 	
 	@Override

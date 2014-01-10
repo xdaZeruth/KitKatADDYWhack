@@ -15,6 +15,7 @@ public class Mine extends Job {
 	private final int goldRocks[] = {45067, 45068};
 	private final int addyRock[] = {29233, 29235};
 	private final int anyRock[] = {45067, 45068, 29233, 29235};
+	private int tries=0;
 	   
 	public Mine(MethodContext arg0) {
 		super(arg0);
@@ -31,12 +32,17 @@ public class Mine extends Job {
 		if (ctx.backpack.select().count() !=28){
 			GroundItem ort = ctx.groundItems.select().id(24909).nearest().poll();
 			Item ticket = ctx.backpack.select().id(24154).first().poll();
+			Item fullUrn = ctx.backpack.select().id(20408).first().poll();
 			while (ort.isValid()){
 				ort.interact("Take");
 				sleep(3000,5000);
 			}
 			while (ticket.isValid()){
 				ticket.interact("Claim spin");
+				sleep(3000,5000);
+			}
+			while (fullUrn.isValid()){
+				fullUrn.interact("Teleport urn");
 				sleep(3000,5000);
 			}
 			final GameObject rock = ctx.objects.select().id(addyRock).nearest().poll();
@@ -46,8 +52,16 @@ public class Mine extends Job {
 					}
 					while ((ctx.players.local().getAnimation()!=12188 || ctx.players.local().getAnimation()==-1 
 							 || ctx.players.local().getStance()==18020) && (rock.isValid()&&ctx.backpack.select().count()!=28)){
+						if (tries==3){
+							ctx.camera.turnTo(rock);
+							rock.interact("Mine");
+							tries=0;
+						}
+						else{
 						rock.interact("Mine");
 						sleep(3000,5000);	
+						tries+=1;
+						}
 					}
 		            if(rock.isValid()){
 						Utils.log("Addy Rock");
@@ -70,8 +84,16 @@ public class Mine extends Job {
 						}
 						while ((ctx.players.local().getAnimation()!=12188 || ctx.players.local().getAnimation()==-1 
 								 || ctx.players.local().getStance()==18020) && (goldRock.isValid()&&ctx.backpack.select().count()!=28)){
-							goldRock.interact("Mine");	
+							if (tries==3){
+								ctx.camera.turnTo(goldRock);
+								goldRock.interact("Mine");
+								tries=0;
+							}
+							else{
+							goldRock.interact("Mine");
 							sleep(3000,5000);	
+							tries+=1;
+							}	
 						}
 			            if(goldRock.isValid()){
 							Utils.log("Gold Rock");
