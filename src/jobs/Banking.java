@@ -6,7 +6,7 @@ import utils.Utils;
 import core.Job;
 
 public class Banking extends Job {
-	private final int bankID[] = {11402, 26972, 11758, 35647, 11402, 2213, 20980, 782};
+	private final int bankID[] = {11402, 26972, 11758, 35647, 11402, 2213, 20980, 782, 6084};
 
 	
 	public Banking(MethodContext arg0) {
@@ -15,8 +15,7 @@ public class Banking extends Job {
 
 	@Override
 	public boolean validate() {
-        return ((ctx.objects.select().id(bankID).nearest().poll().isOnScreen())
-        		&&(ctx.backpack.select().count()==28));
+        return (ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(6084).nearest().poll().getLocation())<=6&&(ctx.backpack.select().count()==28));
 	}
 
 	@Override

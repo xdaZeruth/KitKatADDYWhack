@@ -19,7 +19,7 @@ public class WalkFromBank extends Job {
 	@Override
 	public void execute() {
 		Utils.log("WalkFromBank");
-		double DistanceFromRock = (ctx.players.local().getLocation().distanceTo(new Tile(2875,10253,0)));
+		double DistanceFromRock = (ctx.players.local().getLocation().distanceTo(new Tile(2870,10251,0)));
 		
 		if(DistanceFromRock >=6)
         {

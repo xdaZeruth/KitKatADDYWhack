@@ -12,10 +12,7 @@ public class WalkToBank extends Job {
 
 	@Override
 	public boolean validate() {
-		if (ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(6084).nearest().poll().getLocation())>=7&&(ctx.backpack.select().count()==28)){
-	        return true;
-			}
-			else return false;
+	        return (ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(6084).nearest().poll().getLocation())>=7&&(ctx.backpack.select().count()==28));
 	}
 	
 	@Override

@@ -1,9 +1,12 @@
 package jobs;
 import java.util.concurrent.Callable;
+
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
+import org.powerbot.script.wrappers.Item;
+
 import utils.Utils;
 import core.Job;
 
@@ -27,18 +30,28 @@ public class Mine extends Job {
 		Utils.log("Mine");
 		if (ctx.backpack.select().count() !=28){
 			GroundItem ort = ctx.groundItems.select().id(24909).nearest().poll();
+			Item ticket = ctx.backpack.select().id(24154).first().poll();
 			while (ort.isValid()){
 				ort.interact("Take");
 				sleep(3000,5000);
 			}
+			while (ticket.isValid()){
+				ticket.interact("Claim spin");
+				sleep(3000,5000);
+			}
 			final GameObject rock = ctx.objects.select().id(addyRock).nearest().poll();
-				if (ctx.backpack.select().count()!=28){
+				if (ctx.backpack.select().count()!=28 && ctx.players.local().isIdle()){
 					if (!rock.isOnScreen()){
 						ctx.camera.turnTo(rock);
 					}
-		            if(rock.isValid() && rock.interact("Mine")){
+					while ((ctx.players.local().getAnimation()!=12188 || ctx.players.local().getAnimation()==-1 
+							 || ctx.players.local().getStance()==18020) && (rock.isValid()&&ctx.backpack.select().count()!=28)){
+						rock.interact("Mine");
+						sleep(3000,5000);	
+					}
+		            if(rock.isValid()){
 						Utils.log("Addy Rock");
-						while(rock.isValid()){
+						while (rock.isValid()&&ctx.backpack.select().count()!=28){
 		                if(Condition.wait(new Callable<Boolean>() {
 		                    @Override
 		                    public Boolean call() {
@@ -46,19 +59,23 @@ public class Mine extends Job {
 		                    }
 		                }, 350, 10));
 						}
-		            }	
-		            
+		            }
 				}
 				if (ctx.backpack.select().count()!=28){
 					final GameObject arock = ctx.objects.select().id(addyRock).nearest().poll();
 					final GameObject goldRock = ctx.objects.select().id(goldRocks).nearest().poll();
-					if (ctx.backpack.select().count()!=28&&!arock.isValid()){
+					if (ctx.backpack.select().count()!=28&&!arock.isValid() && ctx.players.local().isIdle()){
 						if (!goldRock.isOnScreen()){
 							ctx.camera.turnTo(goldRock);
 						}
-			            if(goldRock.isValid() && goldRock.interact("Mine")){
+						while ((ctx.players.local().getAnimation()!=12188 || ctx.players.local().getAnimation()==-1 
+								 || ctx.players.local().getStance()==18020) && (goldRock.isValid()&&ctx.backpack.select().count()!=28)){
+							goldRock.interact("Mine");	
+							sleep(3000,5000);	
+						}
+			            if(goldRock.isValid()){
 							Utils.log("Gold Rock");
-							while (goldRock.isValid()){
+							while (goldRock.isValid()&&ctx.backpack.select().count()!=28){
 			                if(Condition.wait(new Callable<Boolean>() {
 			                    @Override
 			                    public Boolean call() {
