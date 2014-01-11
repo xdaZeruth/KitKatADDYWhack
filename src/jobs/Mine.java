@@ -1,8 +1,5 @@
 package jobs;
-import java.util.concurrent.Callable;
-
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Item;
@@ -45,69 +42,59 @@ public class Mine extends Job {
 				fullUrn.interact("Teleport urn");
 				sleep(3000,5000);
 			}
-			final GameObject rock = ctx.objects.select().id(addyRock).nearest().poll();
-				if (ctx.backpack.select().count()!=28 && ctx.players.local().isIdle()){
-					if (!rock.isOnScreen()){
-						ctx.camera.turnTo(rock);
-					}
-					while ((ctx.players.local().getAnimation()!=12188 || ctx.players.local().getAnimation()==-1 
-							 || ctx.players.local().getStance()==18020) && (rock.isValid()&&ctx.backpack.select().count()!=28)){
-						if (tries==3){
-							ctx.camera.turnTo(rock);
-							rock.interact("Mine");
-							tries=0;
-						}
-						else{
-						rock.interact("Mine");
-						sleep(3000,5000);	
-						tries+=1;
-						}
-					}
-		            if(rock.isValid()){
-						Utils.log("Addy Rock");
-						while (rock.isValid()&&ctx.backpack.select().count()!=28){
-		                if(Condition.wait(new Callable<Boolean>() {
-		                    @Override
-		                    public Boolean call() {
-		                        return !rock.isValid();
-		                    }
-		                }, 350, 10));
-						}
-		            }
+			for (GameObject addyRockMine : ctx.objects.select().id(addyRock).nearest()) {
+				if (!addyRockMine.isOnScreen()){
+					ctx.camera.turnTo(addyRockMine);
 				}
-				if (ctx.backpack.select().count()!=28){
-					final GameObject arock = ctx.objects.select().id(addyRock).nearest().poll();
-					final GameObject goldRock = ctx.objects.select().id(goldRocks).nearest().poll();
-					if (ctx.backpack.select().count()!=28&&!arock.isValid() && ctx.players.local().isIdle()){
-						if (!goldRock.isOnScreen()){
-							ctx.camera.turnTo(goldRock);
-						}
-						while ((ctx.players.local().getAnimation()!=12188 || ctx.players.local().getAnimation()==-1 
-								 || ctx.players.local().getStance()==18020) && (goldRock.isValid()&&ctx.backpack.select().count()!=28)){
-							if (tries==3){
-								ctx.camera.turnTo(goldRock);
-								goldRock.interact("Mine");
-								tries=0;
-							}
-							else{
-							goldRock.interact("Mine");
-							sleep(3000,5000);	
-							tries+=1;
-							}	
-						}
-			            if(goldRock.isValid()){
-							Utils.log("Gold Rock");
-							while (goldRock.isValid()&&ctx.backpack.select().count()!=28){
-			                if(Condition.wait(new Callable<Boolean>() {
-			                    @Override
-			                    public Boolean call() {
-			                        return !goldRock.isValid();
-			                    }
-			                }, 350, 10));
-							}
-			            }				
+				if ((ctx.players.local().getAnimation()!=12188 && (ctx.players.local().getStance()!=18021)&&(ctx.players.local().getStance()!=18020)) || ctx.players.local().isIdle()){
+					if (tries==3){
+						ctx.camera.turnTo(addyRockMine);
+						addyRockMine.interact("Mine");
+						Utils.log("clicked");
+						tries=0;
+					}
+					else{
+					addyRockMine.interact("Mine");
+					Utils.log("clicked");
+					sleep(3000,5000);	
+					tries+=1;
 					}
 				}
+				else{
+					sleep(3000,5000);
+				}
+				return;
 			}
+
+			for (GameObject goldRockMine : ctx.objects.select().id(goldRocks).nearest()) {
+				final GameObject arock = ctx.objects.select().id(addyRock).nearest().poll();
+				if (arock.isValid()){
+					break;
+				}
+				if (!goldRockMine.isOnScreen()){
+					ctx.camera.turnTo(goldRockMine);
+				}
+				if ((ctx.players.local().getAnimation()!=12188 && (ctx.players.local().getStance()!=18021)&&(ctx.players.local().getStance()!=18020)) || ctx.players.local().isIdle()){
+					if (tries==3){
+						ctx.camera.turnTo(goldRockMine);
+						goldRockMine.interact("Mine");
+						Utils.log("clicked");
+						tries=0;
+					}
+					else{
+					goldRockMine.interact("Mine");
+					Utils.log("clicked");
+					sleep(3000,5000);	
+					tries+=1;
+					}
+				}
+				else{
+					sleep(3000,5000);
+				}
+				return;
+			}
+			
 		}
+		
+	}
 }

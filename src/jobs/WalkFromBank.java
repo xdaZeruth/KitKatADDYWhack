@@ -15,15 +15,15 @@ public class WalkFromBank extends Job {
 	@Override
 	public boolean validate() {
 		return ((ctx.backpack.select().isEmpty() && ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6) || 
-				((ctx.backpack.select().count()<=2 && ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6)));
+				((ctx.backpack.select().count()<=27 && ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6)));
 	}
 	
 	@Override
 	public void execute() {
 		Utils.log("WalkFromBank");
-		double DistanceFromRock = (ctx.players.local().getLocation().distanceTo(new Tile(2870,10251,0)));
+		boolean needToWalk = (ctx.players.local().getLocation().distanceTo(ctx.objects.select().id(anyRock).nearest().poll().getLocation())>=6);
 		
-		if(DistanceFromRock >=6)
+		if(needToWalk)
         {
                 ctx.movement.stepTowards(new Tile(2870,10251,0));
                 sleep(3000,5000);

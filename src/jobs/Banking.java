@@ -1,7 +1,5 @@
 package jobs;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-
 import utils.Utils;
 import core.Job;
 
